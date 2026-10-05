@@ -1,5 +1,13 @@
 # @cotal-ai/connector-core
 
+## 0.67.0
+
+### Patch Changes
+
+- 7f909a1: Remove sentences from the AG-UI holder and the Claude Code and OpenCode AG-UI mapper comments that described what earlier revisions of those comments got wrong. The comments now state only the current contract: the `boundPath` gate keeps start-once, the chain serializes hook events, the refusals live in `subject-frontier.ts` and `event-wal.ts`, the bracket interleave is open, OpenCode publishes `RUN_ERROR` through `AguiEmitterHolder.closeRun`, and the Claude Code mapper keeps its measured predicate counts. No behavior changes.
+- e85e1fd: An agent's manager calls now repair a class-queue split as the CLI does. In a space with more than one manager, a call can reach a manager other than the one it resolved against, which refuses it before running it. `CotalEndpoint.invokeService` re-described and re-issued that call only once, and the re-issue splits again at the same rate, so with two managers about a quarter of `cotal_spawn` and `cotal_despawn` calls still failed. A spawn whose seat came up was reported as `Couldn't spawn` when the goal-result read that follows it split, and a named despawn was refused with `WAS NOT RUN`. The endpoint now re-issues up to 16 times, the bound the CLI already uses, which core now exports as `BIND_SPLIT_REISSUES`. A named `cotal_despawn` also asks its `inspect` lookup again when the manager that answered names a sibling instance as the owner, until the owner answers, within the same bound; before, it refused a live seat whenever the lookup reached the other manager.
+- 8e0c2a3: Remove comment passages from the connector-core event WAL and the Claude Code AG-UI mapper that narrated earlier revisions of those comments, who flagged them, and the session they were written in. The `bindSubjectFrontier` doc ends at its contract, the temp-file write keeps its `O_EXCL`, `O_NOFOLLOW`, random suffix and `0600` rationale, and the mapper header states its measurement directly: 67 runs and 5217 events on the 5938-record session, with `diagnose()` returning `null`. No behavior changes.
+
 ## 0.66.1
 
 ## 0.66.0
